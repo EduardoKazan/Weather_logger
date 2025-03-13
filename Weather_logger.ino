@@ -2,13 +2,11 @@
 #include <PubSubClient.h>
 #include <DHT.h>
 
-// Definições do sensor DHT
 #define DHTPIN 5
 #define DHTTYPE DHT11
 
 DHT dht(DHTPIN, DHTTYPE);
 
-// Configurações do MQTT
 const char* ssid = "CLARO_2G9F971E";
 const char* password = "WrZHU48hzz";
 const char* mqttServer = "test.mosquitto.org";  // Servidor MQTT
@@ -23,7 +21,6 @@ void setup() {
   Serial.begin(115200);
   dht.begin();
 
-  // Conexão com WiFi
   Serial.print("Conectando ao WiFi...");
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
@@ -32,18 +29,15 @@ void setup() {
   }
   Serial.println(" Conectado!");
 
-  // Configuração do cliente MQTT
   client.setServer(mqttServer, 1883);
 }
 
 void loop() {
-  // Verifica a conexão com o MQTT
   if (!client.connected()) {
     reconnect();
   }
   client.loop();
 
-  // Lê os dados do sensor
   float h = dht.readHumidity();
   float t = dht.readTemperature();
 
@@ -52,7 +46,6 @@ void loop() {
     return;
   }
 
-  // Cria a mensagem JSON
   String message1 = String("Temperature: ") + t + String(" degrees Celsius");
   String message2 = String("Humidity: ") + h + String("%");
 
@@ -73,7 +66,6 @@ void loop() {
 void reconnect() {
   while (!client.connected()) {
     Serial.print("Tentando conexão MQTT...");
-    // Tenta se conectar
     if (client.connect(mqttId)) {
       Serial.println("Conectado!");
     } else {
