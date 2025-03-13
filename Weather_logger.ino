@@ -3,17 +3,17 @@
 #include <DHT.h>
 
 // Definições do sensor DHT
-#define DHTPIN 5          // Pino onde o DHT está conectado
-#define DHTTYPE DHT11     // Tipo do sensor DHT
+#define DHTPIN 5
+#define DHTTYPE DHT11
 
 DHT dht(DHTPIN, DHTTYPE);
 
 // Configurações do MQTT
-const char* ssid = "CLARO_2G9F971E"; // Nome da rede WiFi
-const char* password = "WrZHU48hzz";         // Senha da rede WiFi
-const char* mqttServer = "test.mosquitto.org"; // Servidor MQTT
-const char* mqttTopic1 = "temperature"; // Tópico MQTT 1
-const char* mqttTopic2 = "humidity"; // Tópico MQTT 2
+const char* ssid = "CLARO_2G9F971E";
+const char* password = "WrZHU48hzz";
+const char* mqttServer = "test.mosquitto.org";  // Servidor MQTT
+const char* mqttTopic1 = "temperature";         // Tópico MQTT 1
+const char* mqttTopic2 = "humidity";            // Tópico MQTT 2
 const char* mqttId = "Kazan";
 
 WiFiClient espClient;
@@ -47,7 +47,6 @@ void loop() {
   float h = dht.readHumidity();
   float t = dht.readTemperature();
 
-  // Verifica se a leitura falhou e tenta novamente
   if (isnan(h) || isnan(t)) {
     Serial.println("Falha ao ler do DHT!");
     return;
@@ -72,7 +71,6 @@ void loop() {
 }
 
 void reconnect() {
-  // Loop até se reconectar
   while (!client.connected()) {
     Serial.print("Tentando conexão MQTT...");
     // Tenta se conectar
